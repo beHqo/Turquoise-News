@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Turquoise News</string>
+
+    <string name="network_error_bad_request">Invalid request. Please check your input and try again.</string>
+    <string name="network_error_unauthorized">You’re not authorized. Please check your api key and try again.</string>
+    <string name="network_error_too_many_requests">Too many requests. Please wait a moment and try again.</string>
+    <string name="network_error_server_error">Server error occurred. Please try again later.</string>
+    <string name="network_error_request_timeout">Request timed out. Please check your connection and try again</string>
+    <string name="network_error_socket_timeout">Socket timed out. Please check your connection and try again</string>
+    <string name="network_error_connection_timeout">Connection timed out. Please check your connection and try again.</string>
+    <string name="network_error_no_internet">No internet connection. Please connect and try again.</string>
+    <string name="network_error_serialization">Data error. Unable to process the response; please try again later.</string>
+    <string name="network_error_unknown_io">Network error occurred. Please check your connection and try again.</string>
+    <string name="database_error_no_such_element">Requested item was not found in the database. Please connect and refresh the page.</string>
+    <string name="database_error_unknown_io">Database error occurred. Please try again later.</string>
+    <string name="exhausting_the_when_statement">This exists because we chose to use enums instead of sealed classes and objects!</string>
+
+    <string name="articles_top_bar_title">Articles</string>
+    <string name="articles_top_bar_icon_desc">More options</string>
+
+    <string name="article_details_top_bar_icon_desc">Navigate back</string>
 </resources>
