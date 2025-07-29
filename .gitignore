@@ -1,0 +1,23 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+## IntelliJ
+#.kotlin
+#misc.xml
+#deploymentTargetDropDown.xml
+#render.experimental.xml
+#
+## Keystore files
+#*.jks
+#*.keystore
+#
+## Android Profiling
+#*.hprof
