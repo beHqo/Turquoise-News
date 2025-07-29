@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -18,6 +19,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val apiKey: String? by project
+        buildConfigField(
+            "String",
+            "NEWS_API_KEY",
+            apiKey?.let { "\"$it\"" } ?: "\"2fd99941df004322a157897f71b162e3\"")
     }
 
     buildTypes {
@@ -35,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,7 +64,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.coil.compose)
-
+    implementation(libs.coil.ktor)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
