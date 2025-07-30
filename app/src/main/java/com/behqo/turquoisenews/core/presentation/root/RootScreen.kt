@@ -1,5 +1,6 @@
 package com.behqo.turquoisenews.core.presentation.root
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
@@ -39,6 +41,16 @@ fun RootScreen(vm: RootViewModel = hiltViewModel()) {
                 Theme.DEFAULT -> isSystemInDarkTheme
             }
         }
+    }
+
+    val activity = LocalActivity.current
+    if (activity != null) {
+        val window = activity.window
+
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+        windowInsetsController.isAppearanceLightStatusBars = !isDarkThemeEnabled
+        windowInsetsController.isAppearanceLightNavigationBars = !isDarkThemeEnabled
     }
 
     TurquoiseNewsTheme(
