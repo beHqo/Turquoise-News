@@ -20,11 +20,27 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+//        The null check is there so you wouldn't have to create your own github-actions secret
+//        if you've forked this project and want to build it on your own.
         val apiKey: String? by project
         buildConfigField(
             "String",
             "NEWS_API_KEY",
             apiKey?.let { "\"$it\"" } ?: "\"2fd99941df004322a157897f71b162e3\"")
+    }
+
+    signingConfigs {
+        register("release") {
+            val keystorePath = "../keystore.jks"
+            val alias: String? by project
+            val keyPassword: String? by project
+            val keystorePassword: String? by project
+
+            this.storeFile = file(keystorePath)
+            this.keyAlias = alias
+            this.keyPassword = keyPassword
+            this.storePassword = keystorePassword
+        }
     }
 
     buildTypes {

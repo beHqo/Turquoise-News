@@ -1,0 +1,65 @@
+name: Build release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-release:
+    name: Build release apk/aab files
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Prepare keystore
+        run: |
+          echo $SIGNING_KEY > keystore-b64.txt
+          base64 -d keystore-b64.txt > keystore.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+
+      - name: Build release APK/AAB
+        run: ./gradlew assembleRelease bundleRelease --stacktrace
+        env:
+          ORG_GRADLE_PROJECT_apiKey: ${{ vars.API_KEY }}
+          ORG_GRADLE_PROJECT_alias: ${{ secrets.ALIAS }}
+          ORG_GRADLE_PROJECT_keyPassword: ${{ secrets.KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_keystorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+
+      - name: Upload the release build
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsa-release
+          path: |
+            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+  publish-github:
+    runs-on: ubuntu-latest
+    needs: build-release
+    permissions:
+      contents: write
+    steps:
+      - name: Download release files
+        uses: actions/download-artifact@v4
+        with:
+          name: tsa-release
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "v${{ github.event.inputs.version_name }}"
+          artifacts: "apk/release/app-release.apk,bundle/release/app-release.aab"
+          makeLatest: true
+          generateReleaseNotes: true
