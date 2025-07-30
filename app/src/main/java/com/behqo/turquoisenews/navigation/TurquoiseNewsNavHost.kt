@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.behqo.turquoisenews.core.domain.model.Error
 import com.behqo.turquoisenews.feature.articles.presentation.article_details.ArticleDetailsScreen
 import com.behqo.turquoisenews.feature.articles.presentation.article_list.ArticleListScreen
+import com.behqo.turquoisenews.feature.userprefs.presentation.SettingsScreen
 
 @Composable
 fun TurquoiseNewsNavHost(
@@ -21,11 +22,17 @@ fun TurquoiseNewsNavHost(
         ArticleListScreen(
             navigateToArticleDetails = { id ->
                 navController.navigate(NavigationRoute.ArticleDetails(id))
-            }, showSnackbar = showSnackbar
+            },
+            navigateToSettingScreen = { navController.navigate(NavigationRoute.SettingScreen) },
+            showSnackbar = showSnackbar
         )
     }
 
     composable<NavigationRoute.ArticleDetails> {
         ArticleDetailsScreen(showSnackbar = showSnackbar, navigateUp = navController::navigateUp)
+    }
+
+    composable<NavigationRoute.SettingScreen> {
+        SettingsScreen(navigateUp = navController::navigateUp)
     }
 }

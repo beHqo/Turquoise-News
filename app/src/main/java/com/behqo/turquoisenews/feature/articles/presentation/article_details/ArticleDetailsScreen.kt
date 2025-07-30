@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,9 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -34,6 +29,7 @@ import coil3.compose.AsyncImage
 import com.behqo.turquoisenews.R
 import com.behqo.turquoisenews.core.domain.model.Error
 import com.behqo.turquoisenews.core.domain.model.Result
+import com.behqo.turquoisenews.core.presentation.common.DetailsTopBar
 import com.behqo.turquoisenews.core.presentation.common.LoadingScreen
 import com.behqo.turquoisenews.core.presentation.theme.PaddingManager
 import com.behqo.turquoisenews.feature.articles.presentation.model.ArticleDetailsItem
@@ -62,7 +58,7 @@ private fun ArticleDetailsScreen(
 ) = Column(modifier = Modifier.fillMaxSize()) {
     val context = LocalContext.current
 
-    TopBar(articleDetails, onNavigateUp)
+    DetailsTopBar(articleDetails.title, onNavigateUp)
 
     Column(
         modifier = Modifier
@@ -112,19 +108,6 @@ private fun ArticleDetailsScreen(
         )
     }
 }
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class) //TopAppBar
-private fun TopBar(item: ArticleDetailsItem, onNavigateUp: () -> Unit) = TopAppBar(title = {
-    Text(text = item.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
-}, navigationIcon = {
-    IconButton(onClick = onNavigateUp) {
-        Icon(
-            painter = painterResource(id = R.drawable.round_arrow_back_24),
-            contentDescription = stringResource(R.string.article_details_top_bar_icon_desc)
-        )
-    }
-})
 
 // -------- Previews --------
 val sampleDetails = ArticleDetailsItem(

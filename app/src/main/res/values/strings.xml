@@ -16,7 +16,11 @@
     <string name="exhausting_the_when_statement">This exists because we chose to use enums instead of sealed classes and objects!</string>
 
     <string name="articles_top_bar_title">Articles</string>
-    <string name="articles_top_bar_icon_desc">More options</string>
+    <string name="articles_top_bar_icon_desc">Settings</string>
 
     <string name="article_details_top_bar_icon_desc">Navigate back</string>
+
+    <string name="settings_top_bar_title">Settings</string>
+    <string name="settings_dynamic_colors">Dynamic Colors</string>
+    <string name="settings_theme">Theme</string>
 </resources>

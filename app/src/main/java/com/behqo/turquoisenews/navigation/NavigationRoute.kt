@@ -8,4 +8,7 @@ sealed interface NavigationRoute {
 
     @Serializable
     data class ArticleDetails(val articleId: Long) : NavigationRoute
+
+    @Serializable
+    object SettingScreen : NavigationRoute
 }

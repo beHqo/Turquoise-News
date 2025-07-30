@@ -43,6 +43,7 @@ import com.behqo.turquoisenews.feature.articles.presentation.model.ArticleItem
 fun ArticleListScreen(
     vm: ArticleListViewModel = hiltViewModel(),
     navigateToArticleDetails: (Long) -> Unit,
+    navigateToSettingScreen: () -> Unit,
     showSnackbar: (Error) -> Unit
 ) {
     val articleListResult by vm.articleListResult.collectAsStateWithLifecycle()
@@ -54,7 +55,8 @@ fun ArticleListScreen(
             is Result.Success -> ArticleListScreen(
                 articles = it.data,
                 onItemClick = navigateToArticleDetails,
-                onMoreVertClick = {/*todo: implement*/ })
+                navigateToSettingScreen = navigateToSettingScreen
+            )
         }
     }
 }
@@ -63,11 +65,11 @@ fun ArticleListScreen(
 private fun ArticleListScreen(
     articles: List<ArticleItem>,
     onItemClick: (Long) -> Unit,
-    onMoreVertClick: () -> Unit
+    navigateToSettingScreen: () -> Unit
 ) = LazyColumn(Modifier.fillMaxSize()) {
-    stickyHeader(contentType = { "Header" }) { ArticlesTopBar(onMoreVertClick) }
+    stickyHeader(contentType = { "Header" }) { ArticlesTopBar(navigateToSettingScreen) }
 
-    items(articles, key = { it.articleId }, contentType = { "item" }) { article ->
+    items(articles, key = { it.articleId }, contentType = { "Item" }) { article ->
         ArticleComponent(article = article) { onItemClick(article.articleId) }
     }
 }
@@ -75,25 +77,23 @@ private fun ArticleListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ArticlesTopBar(onMoreVertClick: () -> Unit) = TopAppBar(
-    title = { Text(text = stringResource(R.string.articles_top_bar_title)) },
-    actions = {
-        IconButton(onClick = onMoreVertClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.round_more_vert_24),
-                contentDescription = stringResource(R.string.articles_top_bar_icon_desc)
-            )
-        }
+private fun ArticlesTopBar(
+    navigateToSettingScreen: () -> Unit
+) = TopAppBar(title = { Text(text = stringResource(R.string.articles_top_bar_title)) }, actions = {
+    IconButton(onClick = navigateToSettingScreen) {
+        Icon(
+            painter = painterResource(id = R.drawable.round_settings_24),
+            contentDescription = stringResource(R.string.articles_top_bar_icon_desc)
+        )
     }
-)
+})
 
 @Composable
 private fun ArticleComponent(article: ArticleItem, onClick: () -> Unit) = Row(
     modifier = Modifier
         .fillMaxWidth()
         .clickable(onClick = onClick)
-        .padding(PaddingManager.extraLarge),
-    verticalAlignment = Alignment.CenterVertically
+        .padding(PaddingManager.extraLarge), verticalAlignment = Alignment.CenterVertically
 ) {
     AsyncImage(
         model = article.imageUrl,
@@ -130,15 +130,13 @@ private fun ArticleComponent(article: ArticleItem, onClick: () -> Unit) = Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = article.queryTarget.rawValue,
-                style = MaterialTheme.typography.labelSmall
+                text = article.queryTarget.rawValue, style = MaterialTheme.typography.labelSmall
             )
 
             Spacer(modifier = Modifier.width(PaddingManager.large))
 
             Text(
-                text = article.date,
-                style = MaterialTheme.typography.labelSmall
+                text = article.date, style = MaterialTheme.typography.labelSmall
             )
         }
     }
